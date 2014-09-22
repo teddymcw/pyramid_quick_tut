@@ -5,6 +5,7 @@
     <script src="http://fb.me/react-0.11.2.js"></script>
     <script src="http://fb.me/JSXTransformer-0.11.2.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
   </head>
   <body>
     <div id="content"></div>
@@ -27,6 +28,7 @@
         CommentBox(null),
         document.getElementById('content')
       ); */
+//Each of these variables are called components in reactlang
       // tutorial2.js
       var CommentList = React.createClass({
         render: function() {
@@ -48,6 +50,7 @@
         }
       });
       // tutorial3.js
+      /*
       var CommentBox = React.createClass({
         render: function() {
           return (
@@ -63,8 +66,44 @@
       React.renderComponent(
       CommentBox(null),
       document.getElementById('content')
+      
+      // tutorial9.js
+      var CommentBox = React.createClass({
+        render: function() {
+          return (
+            <div className="commentBox">
+              <h1>Comments</h1>
+              <CommentList data={this.props.data} />
+              <CommentForm />
+            </div>
+          );
+        }
+      });
+      */
+      // tutorial12.js
+      var CommentBox = React.createClass({
+        getInitialState: function() {
+          return {data: []};
+        },
+        render: function() {
+          return (
+            <div className="commentBox">
+              <h1>Comments</h1>
+              <CommentList data={this.state.data} />
+              <CommentForm />
+            </div>
+          );
+        }
+      });
+
+      // tutorial11.js
+      React.renderComponent(
+        <CommentBox url="comments.json" />,
+        document.getElementById('content')
+      );
 
       // tutorial4.js
+      /*
       var CommentList = React.createClass({
         render: function() {
           return (
@@ -75,7 +114,26 @@
           );
         }
       });
+*/
+      // tutorial10.js
+      var CommentList = React.createClass({
+        render: function() {
+          var commentNodes = this.props.data.map(function (comment) {
+            return (
+              <Comment author={comment.author}>
+                {comment.text}
+              </Comment>
+            );
+          });
+          return (
+            <div className="commentList">
+              {commentNodes}
+            </div>
+          );
+        }
+      });
       // tutorial5.js
+      /*
       var Comment = React.createClass({
         render: function() {
           return (
@@ -88,6 +146,29 @@
           );
         }
       });
+*/
+        // tutorial6.js
+      var converter = new Showdown.converter();
+      var Comment = React.createClass({
+        render: function() {
+          var rawMarkup = converter.makeHtml(this.props.children.toString());
+          return (
+            <div className="comment">
+              <h2 className="commentAuthor">
+                {this.props.author}
+              </h2>
+              <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+            </div>
+          );
+        }
+      });
+      //finally we use json instead of 'comments', i think string kind
+      // tutorial8.js
+      var data = [
+        {author: "Pete Hunt", text: "This is one comment"},
+        {author: "Jordan Walke", text: "This is *another* comment"}
+      ];
+
 
     </script>
   </body>
