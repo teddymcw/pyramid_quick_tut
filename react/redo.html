@@ -1,0 +1,137 @@
+<!-- template.html -->
+<html>
+  <head>
+    <title>Hello React</title>
+    <script src="http://fb.me/react-0.11.2.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.11.2.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
+    <style>
+    .box {
+    width: 50px;
+    height: 50px;
+    background-color: black;
+}
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/jsx">
+
+  var MainV = React.createClass({
+    
+    
+    
+    getDefaultProps: function(){
+        return {
+            rows: null
+        }
+    },
+    
+    
+    
+    getInitialState: function(){
+        return {
+            
+        }
+    },
+    
+    
+    
+    render: function(){
+        return React.DOM.div({
+            className: 'root'
+        },
+            _.map(this.props.rows, function(row){
+                return React.DOM.div({
+                    className: 'box',
+                    style: {
+                        backgroundColor: row.value
+                    }
+                })
+            })
+        )
+    }
+    
+    
+    
+  })
+
+  var ItemRendererV = React.createClass({
+    
+    
+    
+    getDefaultProps: function(){
+        return {
+            color: null,
+            value: null
+        }
+    },
+    
+    
+    
+    getInitialState: function(){
+        return {
+            selected: false
+        }
+    },
+    
+    
+    
+    render: function(){
+        return React.DOM.div({
+            className: 'box ' + (this.state.selected ? 'selected' : 'unselected'),
+            onClick: function(){this.setState({selected: !this.state.selected})}.bind(this),
+            style: {
+                backgroundColor: this.props.value
+            }
+        }, this.props.color)
+    }
+    
+    
+    
+  })
+
+  var getData = function getData(){
+    return [
+        {
+            color: "red",
+            value: "#f00"
+        },
+        {
+            color: "green",
+            value: "#0f0"
+        },
+        {
+            color: "blue",
+            value: "#00f"
+        },
+        {
+            color: "cyan",
+            value: "#0ff"
+        },
+        {
+            color: "magenta",
+            value: "#f0f"
+        },
+        {
+            color: "yellow",
+            value: "#ff0"
+        },
+        {
+            color: "black",
+            value: "#000"
+        }
+    ]
+  }
+
+  var rows = getData();
+  var mainV = new MainV({
+      rows: rows
+  });
+  React.renderComponent(mainV, document.body);
+
+    </script>
+  </body>
+</html>
