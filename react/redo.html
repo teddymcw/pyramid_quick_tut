@@ -12,7 +12,13 @@
     width: 50px;
     height: 50px;
     background-color: black;
-}
+    }
+    .selected {
+      opacity: 1;
+    }
+    .unselected {
+      opacity: 0.5;
+    }
     </style>
   </head>
   <body>
@@ -20,65 +26,61 @@
     <script type="text/jsx">
 
   var MainV = React.createClass({
-    
-    
-    
+ 
     getDefaultProps: function(){
         return {
-            rows: null
+            data: {
+              color: null,
+              value: null
+            },
+            onSelect: null
         }
     },
-    
-    
-    
+        
     getInitialState: function(){
         return {
             
         }
-    },
-    
-    
+    },  
+
+    __onItemRendererSelect: function(data){
+      alert(data.color)
+    }, 
     
     render: function(){
-        return React.DOM.div({
+        var _this = this;
+          return React.DOM.div({
             className: 'root'
-        },
+            },
             _.map(this.props.rows, function(row){
-                return React.DOM.div({
-                    className: 'box',
-                    style: {
-                        backgroundColor: row.value
-                    }
-                })
-            })
-        )
+                return new ItemRendererV({
+                  data: row, 
+                  onSelectL _this.__onItemRendererSelect
+                  });
+              })
+          )
     }
-    
-    
-    
-  })
 
+                
+            
+        
+  })
+    
   var ItemRendererV = React.createClass({
-    
-    
-    
+       
     getDefaultProps: function(){
         return {
             color: null,
             value: null
         }
     },
-    
-    
-    
+       
     getInitialState: function(){
         return {
             selected: false
         }
     },
-    
-    
-    
+        
     render: function(){
         return React.DOM.div({
             className: 'box ' + (this.state.selected ? 'selected' : 'unselected'),
@@ -87,9 +89,7 @@
                 backgroundColor: this.props.value
             }
         }, this.props.color)
-    }
-    
-    
+    }    
     
   })
 
